@@ -25,6 +25,7 @@ try {
     }
   } else {
     set_error('不正な操作が行われました');
+    redirect_to(SIGNUP_URL);
   }
 } catch (PDOException $e) {
   set_error('ユーザー登録に失敗しました。');
