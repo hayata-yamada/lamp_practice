@@ -69,8 +69,6 @@ ALTER TABLE `buying_history`
 --
 -- テーブルの AUTO_INCREMENT `buying_details`
 --
-ALTER TABLE `buying_details`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- テーブルの AUTO_INCREMENT `buying_history`
