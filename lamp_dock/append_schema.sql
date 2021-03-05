@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: mysql
--- 生成日時: 2021 年 3 月 01 日 22:07
+-- 生成日時: 2021 年 3 月 05 日 07:26
 -- サーバのバージョン： 5.7.33
 -- PHP のバージョン: 7.4.15
 
@@ -54,7 +54,7 @@ CREATE TABLE `buying_history` (
 -- テーブルのインデックス `buying_details`
 --
 ALTER TABLE `buying_details`
-  ADD PRIMARY KEY (`order_id`);
+  ADD PRIMARY KEY (`order_id`,`item_id`) USING BTREE;
 
 --
 -- テーブルのインデックス `buying_history`
