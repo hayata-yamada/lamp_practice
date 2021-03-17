@@ -222,3 +222,74 @@ function validate_cart_purchase($carts)
   }
   return true;
 }
+
+function get_user_histories($db, $user_id)
+{
+  $sql = "
+  SELECT buying_history.order_id, buying_datetime, SUM(price * amount) as total
+  FROM buying_history 
+  JOIN buying_details ON buying_history.order_id = buying_details.order_id
+  WHERE user_id = ?
+  GROUP BY buying_history.order_id 
+  ORDER BY buying_datetime DESC
+  ";
+  return fetch_all_query($db, $sql, [$user_id]);
+}
+
+function get_all_histories($db)
+{
+  $sql = "
+  SELECT buying_history.order_id, buying_datetime, SUM(price * amount) as total
+  FROM buying_history 
+  JOIN buying_details ON buying_history.order_id = buying_details.order_id
+  GROUP BY buying_history.order_id 
+  ORDER BY buying_datetime DESC
+  ";
+  return fetch_all_query($db, $sql);
+}
+
+function get_user_history($db, $user_id, $order_id)
+{
+  $sql = "
+  SELECT buying_history.order_id, buying_datetime, SUM(price * amount) as total
+  FROM buying_history 
+  JOIN buying_details ON buying_history.order_id = buying_details.order_id
+  WHERE user_id = ? AND buying_history.order_id = ?
+  GROUP BY buying_history.order_id 
+  ";
+  return fetch_query($db, $sql, [$user_id, $order_id]);
+}
+
+function get_all_history($db, $order_id)
+{
+  $sql = "
+  SELECT buying_history.order_id, buying_datetime, SUM(price * amount) as total
+  FROM buying_history 
+  JOIN buying_details ON buying_history.order_id = buying_details.order_id
+  WHERE buying_history.order_id = ?
+  GROUP BY buying_history.order_id 
+  ";
+  return fetch_query($db, $sql, [$order_id]);
+}
+
+function get_details($db, $order_id)
+{
+  $sql = "
+  SELECT buying_details.price, amount, items.name, (buying_details.price * amount) as subtotal
+  FROM items 
+  JOIN buying_details ON items.item_id = buying_details.item_id
+  WHERE order_id = ?
+  ";
+   return fetch_all_query($db, $sql, [$order_id]);
+}
+
+function get_user_details($db, $order_id, $user_id){
+  $sql = "
+  SELECT buying_details.price, amount, items.name, (buying_details.price * amount) as subtotal
+  FROM items 
+  JOIN buying_details ON items.item_id = buying_details.item_id
+  WHERE order_id = ?
+  AND EXISTS(SELECT * FROM buying_history WHERE user_id = ? AND order_id = ?)
+  ";
+  return fetch_all_query($db, $sql, [$order_id, $user_id, $order_id]);
+}
