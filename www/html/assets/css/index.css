@@ -2,3 +2,12 @@
   margin-top: 10px;
 }
 
+h1:last-of-type {
+  margin-top: 50px;
+}
+
+.ranking {
+  text-align: left;
+  font-weight: bold;
+  text-indent: 1em;
+}
